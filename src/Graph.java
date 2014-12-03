@@ -29,7 +29,7 @@ class Vertex {
 
 	 public Graph(String file) throws FileNotFoundException {
 
-		 Scanner sc = new Scanner(new File(file));
+		 Scanner sc = new Scanner(new File(file)).useDelimiter("|");
 
 		 adjLists = new Vertex[sc.nextInt()];
 
