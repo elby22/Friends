@@ -14,11 +14,20 @@ class Neighbor {
 
 class Vertex {
 	String name;
+	String school;
 	Neighbor adjList;
-	Vertex(String name, Neighbor neighbors) {
+	Vertex(String name, String school, Neighbor neighbors) {
 		this.name = name;
+		this.school = school;
 		this.adjList = neighbors;
 	}
+	
+	@Override
+	public String toString() {
+		return "name=" + name + ", school=" + school + ", adjList=" + adjList;
+	}
+	
+	
 }
 
 
@@ -29,27 +38,50 @@ class Vertex {
 
 	 public Graph(String file) throws FileNotFoundException {
 
-		 Scanner sc = new Scanner(new File(file)).useDelimiter("|");
-
+		 Scanner sc = new Scanner(new File(file));
+//		 while(sc.hasNext()){
+//			 System.out.println(sc.next());
+//		 }
+		 
 		 adjLists = new Vertex[sc.nextInt()];
-
+		 sc.nextLine(); //Skips empty
+//		 System.out.println(adjLists.length);
+		 
 		 // read vertices
 		 for (int v=0; v < adjLists.length; v++) {
-			 adjLists[v] = new Vertex(sc.next(), null);
+			 String str = sc.nextLine().trim();
+			 String name = str.substring(0, str.indexOf('|'));
+//			 System.out.println(str);
+			 str = str.substring(str.indexOf('|') + 1);
+//			 System.out.println(name);
+//			 System.out.println(str);
+//			 System.out.println("________________________________");
+//			 System.out.println(str.charAt(0));
+			 if(str.charAt(0) == 'y'){
+//				 System.out.println(str.substring(2));
+				 adjLists[v] = new Vertex(name, str.substring(2), null);
+			 }else{
+//				 System.out.println("null");
+				 adjLists[v] = new Vertex(name, null, null);
+			 }
 		 }
 
-		 // read edges
-		 while (sc.hasNext()) {
-
-			 // read vertex names and translate to vertex numbers
-			 int v1 = indexForName(sc.next());
-			 int v2 = indexForName(sc.next());
-
-			 // add v2 to front of v1's adjacency list and
-			 // add v1 to front of v2's adjacency list
-			 adjLists[v1].adjList = new Neighbor(v2, adjLists[v1].adjList);
-			 adjLists[v2].adjList = new Neighbor(v1, adjLists[v2].adjList);			 
+		 for (int i = 0; i < adjLists.length; i++){
+			 System.out.println(adjLists[i].toString());
 		 }
+		 
+//		 // read edges
+//		 while (sc.hasNext()) {
+//
+//			 // read vertex names and translate to vertex numbers
+//			 int v1 = indexForName(sc.next());
+//			 int v2 = indexForName(sc.next());
+//
+//			 // add v2 to front of v1's adjacency list and
+//			 // add v1 to front of v2's adjacency list
+//			 adjLists[v1].adjList = new Neighbor(v2, adjLists[v1].adjList);
+//			 adjLists[v2].adjList = new Neighbor(v1, adjLists[v2].adjList);			 
+//		 }
 	 }
 
 	 public int countEdges() {
@@ -108,20 +140,20 @@ class Vertex {
 			 }
 		 }
 	 }
-     
-	 /**
-	  * @param args
-	  */
-	 public static void main(String[] args) 
-			 throws IOException {
-		 // TODO Auto-generated method stub
-		 Scanner sc = new Scanner(System.in);
-		 System.out.print("Enter graph input file name: ");
-		 String file = sc.nextLine();
-		 Graph graph = new Graph(file);
-		 graph.print();
-		 
-		 System.out.println("Doing DFS...");
-	     graph.dfs();
-	 }
+//     
+//	 /**
+//	  * @param args
+//	  */
+//	 public static void main(String[] args) 
+//			 throws IOException {
+//		 // TODO Auto-generated method stub
+//		 Scanner sc = new Scanner(System.in);
+//		 System.out.print("Enter graph input file name: ");
+//		 String file = sc.nextLine();
+//		 Graph graph = new Graph(file);
+//		 graph.print();
+//		 
+//		 System.out.println("Doing DFS...");
+//	     graph.dfs();
+//	 }
  }
