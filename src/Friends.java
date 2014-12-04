@@ -9,5 +9,6 @@ public class Friends {
 		String file = sc.next();
 		//test with test.txt
 		Graph g = new Graph(file);
+		g.print();
 	}
 }
