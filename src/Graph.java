@@ -282,6 +282,7 @@ class Vertex {
 				 if(!inList){
 					 outList.add(name1+"|"+name2);
 				 }
+				 inList = false;
 			 }
 		 }
 		 for(int i = 0; i < outList.size(); i++){

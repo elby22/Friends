@@ -10,6 +10,7 @@ public class Friends {
 		String file = sc.next();
 		Graph g = new Graph(file);
 		g.exportGraph();
+		g.print();
 		//IMOPORTANT - BUILD GRAPH ON EACH CHOICE USING NECESSARY CONSTRUCTER 
 		while(true){
 			System.out.println("Choose one of the following by entering the corresponding number...");
@@ -28,6 +29,7 @@ public class Friends {
 				Graph c = new Graph(file, sc.next());
 				ArrayList<Graph> graphs = c.cliqueGraph();
 				for(int i = 0; i < graphs.size(); i++){
+					graphs.get(i).print();
 					graphs.get(i).exportGraph();
 				}
 				System.out.println(); //Extra space
