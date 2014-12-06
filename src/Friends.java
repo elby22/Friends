@@ -21,6 +21,14 @@ public class Friends {
 			if(in > 3 || in < 0){
 				System.out.println("Invalid choice");
 			}else if(in == 1){ //Shortest Chain
+			
+				 Graph m = new Graph(file);
+				System.out.println("Enter the first friend, then second friend");
+				try{
+					m.BFS(m, "sam", "aparna");
+				}catch(ArrayIndexOutOfBoundsException e){
+					System.out.println("That person's name is either improperly typed or not in the graph");
+				}
 				
 			}else if(in == 2){ //Cliques at school
 				System.out.println("Enter the school you wish to find cliques in:");
