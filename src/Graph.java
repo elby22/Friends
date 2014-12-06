@@ -293,4 +293,76 @@ class Vertex {
 			 System.out.println(outList.get(i));
 		 }
 	 }
+	 
+	 public void BFS(Graph g, String start, String target){
+		 Vertex root = null;
+		 Vertex end = null;
+		 boolean goodToGo = false;
+		 Queue<Vertex> q = new LinkedList<Vertex>();   //Linked List implementation of Queue
+		 int v = 0;
+		 int z = 0;
+		
+		 v = indexForName(start);
+		 root = adjLists[v];
+		 
+		 z = indexForName(target);
+		 end = adjLists[z];
+		 
+		 
+		 boolean[] visited = new boolean[adjLists.length];   //Keeps track of visited nodes
+		 int[] prev = new int[adjLists.length];		     //Keeps track of previous nodes (for back-tracking to find the shortest path)
+		 int firstNode = indexForName(root.name);
+		 visited[firstNode] = true;			     //Sets first node to "Visited"
+		 for (v++ ;v < visited.length; v++) {
+			 visited[v] = false;
+			 prev[v] = -1;
+		 }
+		 q.add(root);					//Adds starting position to queue
+		 while(!q.isEmpty()){
+			 Vertex temp = q.remove();
+			 for(Vertex temp3 = temp; temp3.adjList != null; temp3.adjList = temp3.adjList.next){ //Cycles through neighbors of a given Node (we'll call it x)
+				 if(visited[temp3.adjList.vertexNum] == false){                       //Searches to see if this neighbor has been visited
+					 if(adjLists[temp3.adjList.vertexNum].name.equals(target)){	 //Tests if there is a connection between root and target
+						 goodToGo = true;
+						 System.out.println("test");
+					 }
+					 visited[temp3.adjList.vertexNum]= true;    		  //If so, sets visited[neighbor's vertexNum] to true
+					 int prevNode = indexForName(temp3.name);									  
+					 prev[temp3.adjList.vertexNum] = prevNode;	   	//Then sets prev[neighbor's vertexNum] to the given Node, x
+					 Vertex nextNode = adjLists[temp3.adjList.vertexNum];	 //Sets Vertex nextNode to the next Node that is to be added
+					 q.add(nextNode);												  //to the queue, then adds it to the queue
+				 }
+			 }
+			 
+		 }
+
+		 if(goodToGo == true){
+			 printShortestPath(root, end, prev);                 //prints out the shortest path from root to end
+		 }else{
+			 System.out.println("These people are not connected");
+			 return;
+		 }
+	 }
+	 private void printShortestPath(Vertex start, Vertex end, int[] prev){    //finds shortest path
+		 Vertex temp = end;
+		 Stack<String> hello = new Stack();
+		 while(prev[indexForName(temp.name)] != -1){ 
+			 hello.push(temp.name);
+			 //System.out.println(temp.name);
+			 if(temp == start){
+				 break;
+			 }
+			 temp = adjLists[prev[indexForName(temp.name)]];
+		 } 
+		 
+		 while(!hello.isEmpty()){
+			 if(hello.size() == 1){
+				 System.out.println(hello.pop());
+			 }else{
+			 System.out.print(hello.pop()+ "--");
+			 }
+		 }
+		 System.out.println();
+		 System.out.println();
+	 }
  }
