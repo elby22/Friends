@@ -8,10 +8,9 @@ public class Friends {
 		System.out.println("Enter the filename you want to build the graph with:");
 		Scanner sc = new Scanner(System.in);
 		String file = sc.next();
-		Graph g = new Graph(file);
-		g.exportGraph();
-		g.print();
+		
 		//IMOPORTANT - BUILD GRAPH ON EACH CHOICE USING NECESSARY CONSTRUCTER 
+		//Such as Graph g = new Graph(); or whichever constructer you need
 		while(true){
 			System.out.println("Choose one of the following by entering the corresponding number...");
 			System.out.println("1. Shortest intro chain");
@@ -23,13 +22,12 @@ public class Friends {
 				System.out.println("Invalid choice");
 			}else if(in == 1){ //Shortest Chain
 				
-				
 			}else if(in == 2){ //Cliques at school
 				System.out.println("Enter the school you wish to find cliques in:");
 				Graph c = new Graph(file, sc.next());
 				ArrayList<Graph> graphs = c.cliqueGraph();
 				for(int i = 0; i < graphs.size(); i++){
-					graphs.get(i).print();
+					System.out.println("Clique " + (i+1) + ":");
 					graphs.get(i).exportGraph();
 				}
 				System.out.println(); //Extra space
