@@ -31,7 +31,6 @@ class Vertex {
 	
 }
 
-
  public class Graph {
 
 	 Vertex[] adjLists;
@@ -92,10 +91,8 @@ class Vertex {
 		 sc = new Scanner(new File(file));
 		 int numV = sc.nextInt();
 		 sc.nextLine(); //Skips empty line
-		 System.out.println(numV);
+		 
 //		  read vertices
-		 System.out.println(numV);
-		 System.out.println(adjLists.length);
 		 int adjIndex = 0;
 		 for (int v=0; v < numV; v++) {
 			 String str = sc.nextLine().trim();
@@ -130,7 +127,6 @@ class Vertex {
 			 }
 			 
 			 if(v1Present && v2Present){
-				 System.out.println(true);
 				 // add v2 to front of v1's adjacency list and
 				 // add v1 to front of v2's adjacency list
 				 adjLists[v1].adjList = new Neighbor(v2, adjLists[v1].adjList);
@@ -169,9 +165,9 @@ class Vertex {
 		 return -1;
 	 }	
 	 
-	 String nameForIndex(Graph g, int index){
-		 if(index < g.adjLists.length){
-			 return g.adjLists[index].name;
+	 String nameForIndex(int index){
+		 if(index < adjLists.length){
+			 return adjLists[index].name;
 		 }
 		 return null;
 	 }
@@ -211,9 +207,8 @@ class Vertex {
 			 }
 		 }
 	 }
-	 //This makes an arraylist of Vertex[], which is essentially a graph.
+	 //This makes an arraylist of Graph
 	 //For every new clique, a new graph is generated and is returned inside of the arraylist
-	 //TODO Correct output - waiting on email from sesh
 	 public ArrayList<Graph> cliqueGraph() {
 		 ArrayList<Graph> graphs = new ArrayList<Graph>();
 		 ArrayList<Vertex> verticies = null;
@@ -223,10 +218,8 @@ class Vertex {
 		 }
 		 for (int v=0; v < visited.length; v++) {
 			 if (!visited[v]) {
-				 System.out.println("\nSTARTING AT " + adjLists[v].name + "\n");
 				 verticies = new ArrayList<Vertex>();
 				 verticies.add(adjLists[v]);
-				 System.out.print(adjLists[v].name + "--");
 				 cliqueDfs(v, visited, verticies);
 				 Graph g = new Graph();
 				 g.adjLists = new Vertex[verticies.size()];
@@ -255,9 +248,44 @@ class Vertex {
 		 for (Neighbor e=adjLists[v].adjList; e != null; e=e.next) {
 			 if (!visited[e.vertexNum]) {
 				 verticies.add(adjLists[e.vertexNum]);
-				 System.out.print(adjLists[e.vertexNum].name + "--");
 				 cliqueDfs(e.vertexNum, visited, verticies);
 			 }
+		 }
+	 }
+	 //TODO Test this some more on regular graph, not just clque graph
+	 public void exportGraph(){
+		 System.out.println(); //New Line
+		 Vertex[] verticies = adjLists;
+		 System.out.println(verticies.length);
+		 
+		 for(int i = 0; i < verticies.length; i++){
+			 System.out.print(verticies[i].name + "|");
+			 if(verticies[i].school != null){
+				 System.out.println("y|"+ verticies[i].school);
+			 }else{
+				 System.out.println("n");
+			 }
+		 }
+		 String name1;
+		 String name2;
+		 boolean inList = false;
+		 ArrayList<String> outList = new ArrayList<String>();
+		 for(int i = 0; i < verticies.length; i++){
+			 name1 = verticies[i].name;
+			 for (Neighbor e=adjLists[i].adjList; e != null; e=e.next) {
+				 name2 = nameForIndex(e.vertexNum);
+				 for(int n = 0; n < outList.size(); n++){
+					 if(outList.get(n).contains(name1) && outList.get(n).contains(name2)){
+						 inList = true;
+					 }
+				 }
+				 if(!inList){
+					 outList.add(name1+"|"+name2);
+				 }
+			 }
+		 }
+		 for(int i = 0; i < outList.size(); i++){
+			 System.out.println(outList.get(i));
 		 }
 	 }
  }
