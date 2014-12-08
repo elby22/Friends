@@ -326,9 +326,6 @@ class Vertex {
 		 
 		 for (Neighbor e=adjLists[v].adjList; e != null; e=e.next) {
 			 if (!visited[e.vertexNum]) {
-//				 dfsCount++;
-//				 dfsNum[e.vertexNum] = dfsCount;
-//				 back[e.vertexNum] = dfsCount;
 				 System.out.println("\t" + adjLists[v].name + "--" + adjLists[e.vertexNum].name);
 				 prevV = v;
 				 connectorsDfs(e.vertexNum, visited, dfsNum, back, dfsCount, prevV);
@@ -337,7 +334,13 @@ class Vertex {
 				 if(dfsNum[v] > back[prevV]){
 					 back[v] = Math.min(back[v], back[prevV]);
 				 }
+				 if(visited[prevV] == true){
+					 back[v] = Math.min(back[v], dfsNum[prevV]);
+				 }
 				 System.out.println("New num of " + adjLists[v] + " is "+ dfsNum[v] + "/" + back[v]);
+				 if(dfsNum[v] <= back[prevV]){
+					 System.out.println(nameForIndex(v) + " is a connector");
+				 }
 			 }
 		 }
 	 }

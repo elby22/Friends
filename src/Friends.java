@@ -42,20 +42,20 @@ public class Friends {
 			}else if(in == 3){ //Connecters
 //				Graph g = new Graph(file);
 				Graph g = new Graph();
-				g.adjLists = new Vertex[6];
+					g.adjLists = new Vertex[6];
+					g.adjLists[0] = new Vertex("A", null, new Neighbor(1, null));
+					g.adjLists[1] = new Vertex("B", null, new Neighbor(4, new Neighbor(2, new Neighbor(0, null))));
+					g.adjLists[2] = new Vertex("C", null, new Neighbor(3, new Neighbor(1, null)));
+					g.adjLists[3] = new Vertex("D", null, new Neighbor(5, new Neighbor(4, new Neighbor(2, null))));
+					g.adjLists[4] = new Vertex("E", null, new Neighbor(3, new Neighbor(1, null)));
+					g.adjLists[5] = new Vertex("F", null, new Neighbor(3, null));
+
+//					g.adjLists = new Vertex[3];
 //					g.adjLists[0] = new Vertex("A", null, new Neighbor(1, null));
-//					g.adjLists[1] = new Vertex("B", null, new Neighbor(4, new Neighbor(3, new Neighbor(0, null))));
-//					g.adjLists[2] = new Vertex("C", null, new Neighbor(3, new Neighbor(1, null)));
-//					g.adjLists[3] = new Vertex("D", null, new Neighbor(5, new Neighbor(4, new Neighbor(2, null))));
-//					g.adjLists[4] = new Vertex("E", null, new Neighbor(3, new Neighbor(1, null)));
-//					g.adjLists[5] = new Vertex("F", null, new Neighbor(3, null));
-				g.adjLists[0] = new Vertex("A", null, new Neighbor(1, null));
-				g.adjLists[1] = new Vertex("B", null, new Neighbor(4, new Neighbor(3, new Neighbor(0, null))));
-				g.adjLists[2] = new Vertex("C", null, new Neighbor(3, new Neighbor(1, null)));
-				g.adjLists[3] = new Vertex("D", null, new Neighbor(5, new Neighbor(4, new Neighbor(2, null))));
-				g.adjLists[4] = new Vertex("E", null, new Neighbor(3, new Neighbor(1, null)));
-				g.adjLists[5] = new Vertex("F", null, new Neighbor(3, null));
-				
+//					g.adjLists[1] = new Vertex("B", null, new Neighbor(2, new Neighbor(0, null)));
+//					g.adjLists[2] = new Vertex("C", null, new Neighbor(1, null));
+//
+//				
 				g.print();
 				g.connectors();
 			}else{
