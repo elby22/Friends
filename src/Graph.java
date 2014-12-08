@@ -38,6 +38,8 @@ class Vertex {
  public class Graph {
 
 	 Vertex[] adjLists;
+	 int dfsCount = 1;
+	 int prevV = 0;
 	 
 	 public Graph() {
 	}
@@ -308,13 +310,13 @@ class Vertex {
 		 for (int v=0; v < visited.length; v++) {
 			 if (!visited[v]) {
 				 System.out.println("\nSTARTING AT " + adjLists[v].name + "\n");
-				 connectorsDfs(v, visited, dfsNum, back, dfsCount, -1);
+				 connectorsDfs(v, visited, dfsNum, back);
 			 }
 		 }
 	 }
 	 
 	 // recursive for the connectors method
-	 private void connectorsDfs(int v, boolean[] visited, int[]dfsNum, int[] back, int dfsCount, int prevV) {
+	 private void connectorsDfs(int v, boolean[] visited, int[]dfsNum, int[] back) {
 		 visited[v] = true;
 		 if(v > 0){
 			 dfsCount++;
@@ -328,18 +330,17 @@ class Vertex {
 			 if (!visited[e.vertexNum]) {
 				 System.out.println("\t" + adjLists[v].name + "--" + adjLists[e.vertexNum].name);
 				 prevV = v;
-				 connectorsDfs(e.vertexNum, visited, dfsNum, back, dfsCount, prevV);
+				 connectorsDfs(e.vertexNum, visited, dfsNum, back);
 			 }else{
-				 System.out.println("Back");
 				 if(dfsNum[v] > back[prevV]){
 					 back[v] = Math.min(back[v], back[prevV]);
 				 }
 				 if(visited[prevV] == true){
 					 back[v] = Math.min(back[v], dfsNum[prevV]);
 				 }
-				 System.out.println("New num of " + adjLists[v] + " is "+ dfsNum[v] + "/" + back[v]);
+				 System.out.println(v + " Already visited. " + nameForIndex(v) + " " + dfsNum[v] + "/" + back[v]);
 				 if(dfsNum[v] <= back[prevV]){
-					 System.out.println(nameForIndex(v) + " is a connector");
+					 System.out.println(nameForIndex(v) + " is a connector***");
 				 }
 			 }
 		 }
