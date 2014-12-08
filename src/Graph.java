@@ -38,6 +38,13 @@ class Vertex {
  public class Graph {
 
 	 Vertex[] adjLists;
+	 int dfsCount = 1;
+	 int prevV = 0;
+	 int start = -1;
+	 int startCount = 0;
+	 Stack<String> listOfConnectors = new Stack();
+	 ArrayList<String> list = new ArrayList<String>();
+	 
 	 
 	 public Graph() {
 	}
@@ -179,9 +186,9 @@ class Vertex {
 	 public void print() {
 		 System.out.println();
 		 for (int v=0; v < adjLists.length; v++) {
-			 System.out.print(adjLists[v].name);
+			 System.out.print(v+". "+adjLists[v].name);
 			 for (Neighbor nbr=adjLists[v].adjList; nbr != null;nbr=nbr.next) {
-				 System.out.print(" --> " + adjLists[nbr.vertexNum].name);
+				 System.out.print(" --> " + adjLists[nbr.vertexNum].name+"("+nbr.vertexNum+")");
 			 }
 			 System.out.println("\n");
 		 }
@@ -256,7 +263,7 @@ class Vertex {
 			 }
 		 }
 	 }
-	 //TODO Test this some more on regular graph, not just clque graph
+	 
 	 public void exportGraph(){
 		 System.out.println(); //New Line
 		 Vertex[] verticies = adjLists;
@@ -291,6 +298,76 @@ class Vertex {
 		 }
 		 for(int i = 0; i < outList.size(); i++){
 			 System.out.println(outList.get(i));
+		 }
+	 }
+	 
+	 public void connectors() {
+		 if(adjLists.length < 1) return; //Avoid null pointer exceptions below
+		 boolean[] visited = new boolean[adjLists.length];
+		 int[] dfsNum = new int[adjLists.length];
+		 int[] back = new int[adjLists.length];
+		 int dfsCount = 1;
+		 int[] prevDFS = new int[adjLists.length];
+		 dfsNum[0] = dfsCount;
+		 back[0] = dfsCount;
+		 for (int v=0; v < visited.length; v++) {
+			 visited[v] = false;
+		 }
+		 for (int v=0; v < visited.length; v++) {
+			 if (!visited[v]) {
+				 System.out.println("\nSTARTING AT " + adjLists[v].name + "\n");
+				 start = v;
+				 startCount = 0;
+				 connectorsDfs(v, visited, dfsNum, back, prevDFS);
+			 }
+		 }
+		 
+		 while(!listOfConnectors.isEmpty()){
+			 System.out.println(listOfConnectors.pop());
+		 }
+	 }
+	 
+	 // recursive for the connectors method
+	 private void connectorsDfs(int v, boolean[] visited, int[]dfsNum, int[] back, int[] prevDFS) {
+		 visited[v] = true;
+		 if(v > 0){
+			 dfsCount++;
+			 dfsNum[v] = dfsCount;
+			 back[v] = dfsCount;
+		//	 System.out.println("Test for V: Index num: " + v + "  dfsNum " + dfsNum[v] + "   back " + back[v]);
+		 }
+		 System.out.println("\tvisiting " + adjLists[v].name  + dfsNum[v]+"/"+back[v] + "-" + v);
+
+		 
+		 for (Neighbor e=adjLists[v].adjList; e != null; e=e.next) {
+			 prevDFS[e.vertexNum] = v;
+			 if (!visited[e.vertexNum]) {
+				 System.out.println("\t" + adjLists[v].name + "--" + adjLists[e.vertexNum].name);
+				 prevV = v;
+				 connectorsDfs(e.vertexNum, visited, dfsNum, back, prevDFS);
+			 }else{
+			
+				 if(visited[prevDFS[v] /*prevV*/] == true){
+					 back[v] = Math.min(back[v], dfsNum[prevDFS[v] /*prevV*/]);
+				 }
+				 System.out.println(v + " Already visited. " + nameForIndex(v) + " " + dfsNum[v] + "/" + back[v]);
+				 if(dfsNum[v] <= back[prevDFS[v] /*prevV*/]){
+					 if(start == v){
+						 startCount++;
+					 }
+					 
+					 if(v != start || v == start && startCount < 1){   //potential condition for if the starting vertex IS a connector
+			//		 if(!list.contains(nameForIndex(v))){          //potential solution for duplicates. That being said, 
+			//			 list.add(nameForIndex(v));                //if there are duplicates, our code is wrong
+						 listOfConnectors.push(nameForIndex(v));
+			//		 }
+						 System.out.println(nameForIndex(v) + " is a connector***");
+					 }
+				 }
+			 }
+			 if(dfsNum[v] > back[prevDFS[v] /*prevV*/] && v != start){
+				 back[v] = Math.min(back[v], back[prevDFS[v] /*prevV*/]);
+			 }
 		 }
 	 }
 	 
